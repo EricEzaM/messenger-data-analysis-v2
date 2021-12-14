@@ -26,7 +26,21 @@ export class Conversation {
 
 		this.messages.push(...other.messages);
 
-		for (const p of other.participants) {
+		// Account for cases where the conversation has multiple participants with the same name.
+		// e.g. "Facebook user"
+		let participantsWithNameInstanceNumber = [];
+		for (let i = 0; i < other.participants.length; i++) {
+			const p = other.participants[i];
+			const instance = other.participants
+				.slice(0, i + 1)
+				.filter((p2) => p2.name === p.name).length;
+
+			participantsWithNameInstanceNumber.push({
+				name: p.name + (instance > 1 ? `_${instance}` : ""),
+			});
+		}
+
+		for (const p of participantsWithNameInstanceNumber) {
 			if (!this.participants.map((p) => p.name).includes(p.name)) {
 				this.participants.push(p);
 			}
