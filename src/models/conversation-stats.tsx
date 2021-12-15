@@ -11,14 +11,13 @@ export type MessageType =
 	| "Text";
 
 export interface TimeData {
+	date: Date;
 	day: number;
-	date: number;
+	date_of_month: number;
 	month: number;
 	year: number;
 	hour: number;
 	minute: number;
-	date_dateonly: Date;
-	date_monthonly: Date;
 }
 
 export interface MessageData {
@@ -33,7 +32,6 @@ export interface MessageData {
 export interface ConversationData {
 	title: string;
 	participants: string[];
-	messageCount: number;
+	messages: MessageData[];
 	participantMessageCount: Map<string, number>;
-	messagesData: MessageData[];
 }

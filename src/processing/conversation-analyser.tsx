@@ -53,9 +53,8 @@ export class ConversationAnalyser {
 		let convData: ConversationData = {
 			title: conversation.title,
 			participants: conversation.participants,
-			messageCount: conversation.messages.length,
 			participantMessageCount: participantMessages,
-			messagesData: messagesData,
+			messages: messagesData,
 		};
 
 		return convData;
@@ -90,19 +89,12 @@ export class ConversationAnalyser {
 
 		return {
 			day: getDay(msgDate),
-			date: getDate(msgDate),
+			date_of_month: getDate(msgDate),
 			month: getMonth(msgDate),
 			year: getYear(msgDate),
 			hour: getHours(msgDate),
 			minute: getMinutes(msgDate),
-			date_dateonly: set(msgDate, {
-				hours: 0,
-				minutes: 0,
-				seconds: 0,
-				milliseconds: 0,
-			}),
-			date_monthonly: set(msgDate, {
-				date: 1,
+			date: set(msgDate, {
 				hours: 0,
 				minutes: 0,
 				seconds: 0,

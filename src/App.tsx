@@ -2,6 +2,8 @@ import React from "react";
 import { ConversationProvider } from "./hooks/use-conversation";
 import { SubApp } from "./subapp";
 
+import "c3/c3.css";
+
 function App() {
 	return (
 		<ConversationProvider>
