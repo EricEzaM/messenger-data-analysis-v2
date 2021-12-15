@@ -1,5 +1,6 @@
 import { useRef } from "react";
-import { Charts } from "./charts";
+import { MessagesTimeline } from "./charts/messages-timeline";
+import { ParticipantContribution } from "./charts/participant-contribution";
 import { useConversation } from "./hooks/use-conversation";
 
 export function SubApp() {
@@ -30,7 +31,8 @@ export function SubApp() {
 					<li>{conversation.messages.length}</li>
 				</ul>
 			)}
-			<Charts />
+			<MessagesTimeline groupBy="Month" />
+			<ParticipantContribution />
 		</div>
 	);
 }
