@@ -76,6 +76,11 @@ export function MessagesCategorical({ category }: { category: Category }) {
 					categories: category === "DaysOfWeek" ? daysOfWeek : monthsOfYear,
 				},
 			},
+			grid: {
+				y: {
+					show: true,
+				},
+			},
 		});
 	}, [conversationData, category]);
 

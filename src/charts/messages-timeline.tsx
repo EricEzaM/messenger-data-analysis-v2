@@ -82,6 +82,11 @@ export function MessagesTimeline({ groupBy }: { groupBy: TimelineGroupBy }) {
 			zoom: {
 				enabled: true,
 			},
+			grid: {
+				y: {
+					show: true,
+				},
+			},
 		});
 	}, [conversationData, groupBy]);
 
