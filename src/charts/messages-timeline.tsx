@@ -53,16 +53,16 @@ export function MessagesTimeline({ groupBy }: { groupBy: TimelineGroupBy }) {
 				x: "x",
 				columns: [
 					["x", ...dateMessageCounts.map((t) => t.date)],
+					...participantData.map<[string, ...number[]]>((v) => [
+						v.name,
+						...v.counts,
+					]),
 					[
 						"Total",
 						...dateMessageCounts.map((count) =>
 							Object.values(count.participants).reduce((acc, v) => acc + v, 0)
 						),
 					],
-					...participantData.map<[string, ...number[]]>((v) => [
-						v.name,
-						...v.counts,
-					]),
 				],
 			},
 			axis: {
