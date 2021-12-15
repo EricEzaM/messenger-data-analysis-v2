@@ -1,10 +1,10 @@
 import c3 from "c3";
 import { useEffect, useRef } from "react";
 import { useConversation } from "../hooks/use-conversation";
-import { getChartId } from "./chart-utils";
+import { generateChartId } from "./chart-utils";
 
 export function ParticipantMessageDistribution() {
-	const chartId = useRef(getChartId());
+	const chartId = useRef(generateChartId());
 	const { conversationData } = useConversation();
 
 	useEffect(() => {

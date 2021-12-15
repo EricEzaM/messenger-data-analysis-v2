@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
 
-export function getChartId() {
+export function generateChartId() {
 	return "chart-" + v4();
 }
