@@ -25,6 +25,11 @@ export function ParticipantMessageDistribution() {
 			donut: {
 				title: "Message Distribution",
 			},
+			tooltip: {
+				format: {
+					value: (value, ratio, id, index) => `${value}`,
+				},
+			},
 		});
 	}, [conversationData]);
 

@@ -34,6 +34,11 @@ export function ParticipantWordsDistribution() {
 			donut: {
 				title: "Word Distribution",
 			},
+			tooltip: {
+				format: {
+					value: (value, ratio, id, index) => `${value}`,
+				},
+			},
 		});
 	}, [conversationData]);
 
