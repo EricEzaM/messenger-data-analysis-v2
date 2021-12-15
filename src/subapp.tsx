@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { MessagesTimeline } from "./charts/messages-timeline";
-import { ParticipantContribution } from "./charts/participant-contribution";
+import { ParticipantMessageDistribution } from "./charts/participant-message-distribution";
+import { ParticipantWordsDistribution } from "./charts/participant-words-distribution";
 import { useConversation } from "./hooks/use-conversation";
 
 export function SubApp() {
@@ -32,7 +33,8 @@ export function SubApp() {
 				</ul>
 			)}
 			<MessagesTimeline groupBy="Month" />
-			<ParticipantContribution />
+			<ParticipantMessageDistribution />
+			<ParticipantWordsDistribution />
 		</div>
 	);
 }

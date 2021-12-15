@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { useConversation } from "../hooks/use-conversation";
 import { getChartId } from "./chart-utils";
 
-export function ParticipantContribution() {
+export function ParticipantWordsDistribution() {
 	const chartId = useRef(getChartId());
 	const { conversationData } = useConversation();
 
@@ -12,19 +12,27 @@ export function ParticipantContribution() {
 			return;
 		}
 
-		let donutColumns: [string, number][] = [];
-		conversationData.participantMessageCount.forEach((v, k) => {
-			donutColumns.push([k, v]);
-		});
+		let participantWords = conversationData.messages.reduce<{
+			[key: string]: number;
+		}>((accum, { sender, wordCount }) => {
+			if (wordCount) {
+				accum[sender] = (accum[sender] ?? 0) + wordCount;
+			}
+			return accum;
+		}, {});
+
+		let participantWordColumns: [string, number][] = Object.keys(
+			participantWords
+		).map((key) => [key, participantWords[key]]);
 
 		c3.generate({
 			bindto: `#${chartId.current}`,
 			data: {
 				type: "donut",
-				columns: donutColumns,
+				columns: participantWordColumns,
 			},
 			donut: {
-				title: "Message Distribution",
+				title: "Word Distribution",
 			},
 		});
 	}, [conversationData]);

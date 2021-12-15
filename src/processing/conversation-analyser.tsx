@@ -19,19 +19,13 @@ import { LatinChars } from "../utils";
 
 export class ConversationAnalyser {
 	analyse(conversation: Conversation): ConversationData {
-		let participantMessages = new Map<string, number>(
-			conversation.participants.map((n) => [n, 0])
-		);
+		let participantMessages: { [key: string]: number } = {};
 		let messagesData: MessageData[] = [];
 
 		for (const msg of conversation.messages) {
 			// Update the participant message counts
-			let currentParicipantMsgCount = participantMessages.get(msg.sender_name);
-			if (currentParicipantMsgCount) {
-				participantMessages.set(msg.sender_name, currentParicipantMsgCount + 1);
-			} else {
-				participantMessages.set(msg.sender_name, 1);
-			}
+			participantMessages[msg.sender_name] =
+				(participantMessages[msg.sender_name] ?? 0) + 1;
 
 			// Get all other message data
 			// Content data is used to get words and emojis, but is not returned itself.

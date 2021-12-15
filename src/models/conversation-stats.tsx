@@ -33,5 +33,5 @@ export interface ConversationData {
 	title: string;
 	participants: string[];
 	messages: MessageData[];
-	participantMessageCount: Map<string, number>;
+	participantMessageCount: { [key: string]: number };
 }

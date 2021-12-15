@@ -37,8 +37,6 @@ export function MessagesTimeline({ groupBy }: { groupBy: TimelineGroupBy }) {
 			return;
 		}
 
-		debugger;
-
 		const dateMessageCounts = calculateDateMessageCounts(
 			conversationData,
 			groupBy
