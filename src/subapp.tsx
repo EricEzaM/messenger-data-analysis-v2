@@ -1,14 +1,15 @@
 import { useRef } from "react";
-import { useConversation } from "./hooks/useConversation";
+import { Charts } from "./charts";
+import { useConversation } from "./hooks/use-conversation";
 
 export function SubApp() {
 	const input = useRef<HTMLInputElement>(null);
-	const { conversation, loadConversationFromFiles } = useConversation();
+	const { conversation, analyseConversationFromFiles } = useConversation();
 
 	function onFilesSelected() {
 		if (input.current && input.current.files) {
 			let fileArr = Array.from(input.current.files);
-			loadConversationFromFiles(fileArr);
+			analyseConversationFromFiles(fileArr);
 		}
 	}
 
@@ -29,6 +30,7 @@ export function SubApp() {
 					<li>{conversation.messages.length}</li>
 				</ul>
 			)}
+			<Charts />
 		</div>
 	);
 }

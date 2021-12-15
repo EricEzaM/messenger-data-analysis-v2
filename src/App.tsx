@@ -1,5 +1,5 @@
 import React from "react";
-import { ConversationProvider } from "./hooks/useConversation";
+import { ConversationProvider } from "./hooks/use-conversation";
 import { SubApp } from "./subapp";
 
 function App() {

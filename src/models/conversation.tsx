@@ -1,18 +1,15 @@
-export class Message {
-	content: string = "";
-	sender_name: string = "";
-	type: string = "";
-	timestamp_ms: number = -1;
-}
-
-export class Participant {
-	name: string = "";
+export interface Message {
+	content: string;
+	sender_name: string;
+	type: string;
+	timestamp_ms: number;
+	[key: string]: any; // Can have many different keys, depending on the type of message, e.g. stickers, shared links, etc.
 }
 
 export class Conversation {
 	title: string = "";
 	messages: Message[] = [];
-	participants: Participant[] = [];
+	participants: string[] = [];
 	thread_type: string = "";
 
 	extend(other: Conversation) {
@@ -26,23 +23,11 @@ export class Conversation {
 
 		this.messages.push(...other.messages);
 
-		// Account for cases where the conversation has multiple participants with the same name.
-		// e.g. "Facebook user"
-		let participantsWithNameInstanceNumber = [];
-		for (let i = 0; i < other.participants.length; i++) {
-			const p = other.participants[i];
-			const instance = other.participants
-				.slice(0, i + 1)
-				.filter((p2) => p2.name === p.name).length;
-
-			participantsWithNameInstanceNumber.push({
-				name: p.name + (instance > 1 ? `_${instance}` : ""),
-			});
-		}
-
-		for (const p of participantsWithNameInstanceNumber) {
-			if (!this.participants.map((p) => p.name).includes(p.name)) {
-				this.participants.push(p);
+		// We could account for duplicate names, but the data only includes
+		// names so we can't discern between messages from people with the same name anyway.
+		for (const name of other.participants) {
+			if (!this.participants.includes(name)) {
+				this.participants.push(name);
 			}
 		}
 	}

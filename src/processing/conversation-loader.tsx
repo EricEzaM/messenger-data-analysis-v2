@@ -1,7 +1,6 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
 import { Conversation } from "../models/conversation";
 
-class ConversationLoader {
+export class ConversationLoader {
 	files: File[] = [];
 	conversationParts: Conversation[] = [];
 
@@ -36,7 +35,13 @@ class ConversationLoader {
 			let res = ev.target?.result;
 
 			if (res && typeof res === "string") {
-				let fileConv = JSON.parse(res);
+				let fileConv = JSON.parse(res, (key, value) => {
+					if (key === "participants") {
+						return value.map((p: { name: string }) => p.name);
+					}
+
+					return value;
+				});
 
 				// Only keep properties from the JSON that appear on the Conversation class.
 				let conversationPart = Object.assign(
@@ -56,45 +61,4 @@ class ConversationLoader {
 
 		fr.readAsText(this.files[index]);
 	}
-}
-
-interface ConversationContextProps {
-	conversation: Conversation | null;
-	loadConversationFromFiles: (files: File[]) => void;
-}
-
-export const ConversationContext = createContext<ConversationContextProps>({
-	conversation: null,
-	loadConversationFromFiles: () => {},
-});
-
-export function ConversationProvider({ children }: { children: ReactNode }) {
-	const conversationContext = useConversationProvider();
-
-	return (
-		<ConversationContext.Provider value={conversationContext}>
-			{children}
-		</ConversationContext.Provider>
-	);
-}
-
-function useConversationProvider(): ConversationContextProps {
-	const [conversation, setConversation] = useState<Conversation | null>(null);
-
-	function loadConversationFromFiles(files: File[]) {
-		let loader = new ConversationLoader(files);
-		loader.onLoad = (conversation: Conversation) => {
-			setConversation(conversation);
-		};
-		loader.load();
-	}
-
-	return {
-		conversation,
-		loadConversationFromFiles,
-	};
-}
-
-export function useConversation() {
-	return useContext(ConversationContext);
 }
