@@ -6,6 +6,31 @@ import { generateChartId } from "./chart-utils";
 
 type Category = "DaysOfWeek" | "MonthsOfYear";
 
+const daysOfWeek = [
+	"Sunday",
+	"Monday",
+	"Tuesday",
+	"Wednesday",
+	"Thursday",
+	"Friday",
+	"Saturday",
+];
+
+const monthsOfYear = [
+	"January",
+	"February",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"August",
+	"September",
+	"October",
+	"November",
+	"December",
+];
+
 export function MessagesCategorical({ category }: { category: Category }) {
 	const chartId = useRef(generateChartId());
 	const { conversationData } = useConversation();
@@ -15,40 +40,17 @@ export function MessagesCategorical({ category }: { category: Category }) {
 			return;
 		}
 
-		const daysOfWeek = [
-			"Sunday",
-			"Monday",
-			"Tuesday",
-			"Wednesday",
-			"Thursday",
-			"Friday",
-			"Saturday",
-		];
-
-		const monthsOfYear = [
-			"January",
-			"February",
-			"March",
-			"April",
-			"May",
-			"June",
-			"July",
-			"August",
-			"September",
-			"October",
-			"November",
-			"December",
-		];
-
-		const participantCounts: { [participant: string]: Array<number> } = {};
-
-		// Add an entry for each participant and fill with zeros.
-		conversationData.participants.forEach(
-			(p) =>
-				(participantCounts[p] = Array(category === "DaysOfWeek" ? 7 : 12).fill(
-					0
-				))
+		// Create counts dictionary style object and fill with zeroes to initilise the counts.
+		const arrLen = category === "DaysOfWeek" ? 7 : 12;
+		const participantCounts = conversationData.participants.reduce(
+			(accum: { [participant: string]: number[] }, p) => {
+				accum[p] = Array(arrLen).fill(0);
+				return accum;
+			},
+			{}
 		);
+
+		// Add message counts to each category for each participant
 		conversationData.messages.forEach((msg) => {
 			participantCounts[msg.sender][
 				category === "DaysOfWeek"
@@ -57,7 +59,7 @@ export function MessagesCategorical({ category }: { category: Category }) {
 			] += 1;
 		});
 
-		// Create columsn in the required format.
+		// Create columns in the required format.
 		const daysOfWeekColumns: [string, ...number[]][] = Object.keys(
 			participantCounts
 		).map((k) => [k, ...participantCounts[k]]);
