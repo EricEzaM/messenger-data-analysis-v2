@@ -60,15 +60,15 @@ export function MessagesCategorical({ category }: { category: Category }) {
 		});
 
 		// Create columns in the required format.
-		const daysOfWeekColumns: [string, ...number[]][] = Object.keys(
-			participantCounts
-		).map((k) => [k, ...participantCounts[k]]);
+		const columns: [string, ...number[]][] = Object.keys(participantCounts).map(
+			(k) => [k, ...participantCounts[k]]
+		);
 
 		c3.generate({
 			bindto: `#${chartId.current}`,
 			data: {
 				type: "bar",
-				columns: daysOfWeekColumns,
+				columns: columns,
 			},
 			axis: {
 				x: {
