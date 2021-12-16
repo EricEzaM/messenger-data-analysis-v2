@@ -1,8 +1,8 @@
 import c3 from "c3";
 import { getDay, getMonth } from "date-fns";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
-import { generateChartId } from "./chart-utils";
 
 type Category = "DaysOfWeek" | "MonthsOfYear";
 
@@ -32,7 +32,7 @@ const monthsOfYear = [
 ];
 
 export function MessagesCategorical({ category }: { category: Category }) {
-	const chartId = useRef(generateChartId());
+	const chartId = useChartId();
 	const { conversationData } = useConversation();
 
 	useEffect(() => {
@@ -82,7 +82,7 @@ export function MessagesCategorical({ category }: { category: Category }) {
 				},
 			},
 		});
-	}, [conversationData, category]);
+	}, [conversationData, category, chartId]);
 
 	return <div id={chartId.current}></div>;
 }

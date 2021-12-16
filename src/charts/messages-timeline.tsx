@@ -14,10 +14,10 @@ import {
 	startOfYear,
 } from "date-fns";
 import addYears from "date-fns/esm/addYears/index";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
 import { ConversationData } from "../models/conversation-stats";
-import { generateChartId } from "./chart-utils";
 
 export type TimelineGroupBy = "Date" | "Week" | "Month" | "Year";
 
@@ -30,7 +30,7 @@ interface DateMessageCount {
 
 export function MessagesTimeline({ groupBy }: { groupBy: TimelineGroupBy }) {
 	const { conversationData } = useConversation();
-	const chartId = useRef(generateChartId());
+	const chartId = useChartId();
 
 	useEffect(() => {
 		if (!conversationData) {
@@ -88,7 +88,7 @@ export function MessagesTimeline({ groupBy }: { groupBy: TimelineGroupBy }) {
 				},
 			},
 		});
-	}, [conversationData, groupBy]);
+	}, [conversationData, groupBy, chartId]);
 
 	return <div id={chartId.current}></div>;
 }

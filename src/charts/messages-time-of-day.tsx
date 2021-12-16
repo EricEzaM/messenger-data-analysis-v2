@@ -1,7 +1,7 @@
 import c3 from "c3";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
-import { generateChartId } from "./chart-utils";
 
 type GroupByTimeOfDay = "Hours" | "Minutes";
 
@@ -23,7 +23,7 @@ const minutes = Array(24 * MINUTES_INTERVAL_DIVISOR)
 	});
 
 export function MessagesTimeOfDay({ groupBy }: { groupBy: GroupByTimeOfDay }) {
-	const chartId = useRef(generateChartId());
+	const chartId = useChartId();
 	const { conversationData } = useConversation();
 
 	useEffect(() => {
@@ -80,7 +80,7 @@ export function MessagesTimeOfDay({ groupBy }: { groupBy: GroupByTimeOfDay }) {
 			// 	},
 			// },
 		});
-	}, [conversationData, groupBy]);
+	}, [conversationData, groupBy, chartId]);
 
 	return <div id={chartId.current}></div>;
 }

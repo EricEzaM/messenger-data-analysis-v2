@@ -1,10 +1,10 @@
 import c3 from "c3";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
-import { generateChartId } from "./chart-utils";
 
 export function ParticipantWordsDistribution() {
-	const chartId = useRef(generateChartId());
+	const chartId = useChartId();
 	const { conversationData } = useConversation();
 
 	useEffect(() => {
@@ -40,7 +40,7 @@ export function ParticipantWordsDistribution() {
 				},
 			},
 		});
-	}, [conversationData]);
+	}, [conversationData, chartId]);
 
 	return <div id={chartId.current}></div>;
 }
