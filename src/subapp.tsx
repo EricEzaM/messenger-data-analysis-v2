@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { MessagesCategorical } from "./charts/messages-categorical";
+import { MessagesCategorical } from "./charts/messages-date-categorical";
 import { MessagesTimeOfDay } from "./charts/messages-time-of-day";
 import { MessagesTimeline } from "./charts/messages-timeline";
 import { ParticipantMessageDistribution } from "./charts/participant-message-distribution";
