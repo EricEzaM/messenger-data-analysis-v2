@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { MessagesCategorical } from "./charts/messages-categorical";
+import { MessagesTimeOfDay } from "./charts/messages-time-of-day";
 import { MessagesTimeline } from "./charts/messages-timeline";
 import { ParticipantMessageDistribution } from "./charts/participant-message-distribution";
 import { ParticipantWordsDistribution } from "./charts/participant-words-distribution";
@@ -33,6 +34,8 @@ export function SubApp() {
 					<li>{conversation.messages.length}</li>
 				</ul>
 			)}
+			<MessagesTimeOfDay groupBy="Hours" />
+			<MessagesTimeOfDay groupBy="Minutes" />
 			<MessagesCategorical category="MonthsOfYear" />
 			<MessagesTimeline groupBy="Month" />
 			<ParticipantMessageDistribution />
