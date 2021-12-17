@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { EmojiFrequency } from "./charts/emoji-frequency";
 import { MessagesCategorical } from "./charts/messages-date-categorical";
 import { MessageLengths } from "./charts/messages-lengths";
 import { MessagesTimeOfDay } from "./charts/messages-time-of-day";
@@ -62,6 +63,7 @@ export function SubApp() {
 				/>
 			</div>
 
+			<EmojiFrequency />
 			<WordFrequency lengthMin={wordLenMin} lengthMax={wordLenMax} />
 			<MessageLengths lengthLimit={lengthLimit} />
 			<MessagesTimeOfDay groupBy="Hours" />

@@ -4,6 +4,7 @@ import { SubApp } from "./subapp";
 
 import "c3/c3.css";
 import "./styles/c3-overrides.css";
+import "./styles/c3-extensions.css";
 
 function App() {
 	return (
