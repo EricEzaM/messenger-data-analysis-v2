@@ -1,5 +1,6 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { MessagesCategorical } from "./charts/messages-date-categorical";
+import { MessageLengths } from "./charts/messages-lengths";
 import { MessagesTimeOfDay } from "./charts/messages-time-of-day";
 import { MessagesTimeline } from "./charts/messages-timeline";
 import { ParticipantMessageDistribution } from "./charts/participant-message-distribution";
@@ -9,6 +10,8 @@ import { useConversation } from "./hooks/use-conversation";
 export function SubApp() {
 	const input = useRef<HTMLInputElement>(null);
 	const { conversation, analyseConversationFromFiles } = useConversation();
+
+	const [lengthLimit, setLengthLimit] = useState(12);
 
 	function onFilesSelected() {
 		if (input.current && input.current.files) {
@@ -34,6 +37,14 @@ export function SubApp() {
 					<li>{conversation.messages.length}</li>
 				</ul>
 			)}
+
+			<input
+				type="number"
+				value={lengthLimit}
+				onChange={(e) => setLengthLimit(parseInt(e.target.value))}
+			/>
+
+			<MessageLengths lengthLimit={lengthLimit} />
 			<MessagesTimeOfDay groupBy="Hours" />
 			<MessagesTimeOfDay groupBy="Minutes" />
 			<MessagesCategorical category="MonthsOfYear" />
