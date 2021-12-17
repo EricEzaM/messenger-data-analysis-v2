@@ -39,7 +39,7 @@ export function WordFrequency({
 
 		const wordCountColumns = conversationData.participants.map<
 			[string, ...number[]]
-		>((p) => [p, ...topWords.map((w) => wordCounts[w][p])]);
+		>((p) => [p, ...topWords.map((w) => wordCounts[w][p] ?? 0)]);
 
 		c3.generate({
 			bindto: `#${chartId.current}`,
