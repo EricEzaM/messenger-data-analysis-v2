@@ -2,14 +2,18 @@ import c3 from "c3";
 import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
+import { ColumnChartProps, getStackConfiguration } from "./chart-common";
+
+type Props = {
+	lengthMin: number;
+	lengthMax: number;
+} & ColumnChartProps;
 
 export function WordFrequency({
 	lengthMin = 1,
 	lengthMax = 10,
-}: {
-	lengthMin: number;
-	lengthMax: number;
-}) {
+	columnDisplayType,
+}: Props) {
 	const chartId = useChartId();
 	const { conversationData } = useConversation();
 
@@ -46,6 +50,7 @@ export function WordFrequency({
 			data: {
 				type: "bar",
 				columns: wordCountColumns,
+				...getStackConfiguration(wordCountColumns, columnDisplayType),
 			},
 			axis: {
 				x: {
@@ -54,7 +59,7 @@ export function WordFrequency({
 				},
 			},
 		});
-	}, [conversationData, chartId, lengthMin, lengthMax]);
+	}, [conversationData, chartId, lengthMin, lengthMax, columnDisplayType]);
 
 	return <div id={chartId.current}></div>;
 }

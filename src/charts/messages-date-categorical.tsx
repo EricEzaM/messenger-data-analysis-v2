@@ -3,6 +3,11 @@ import { getDay, getMonth } from "date-fns";
 import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
+import {
+	ColumnChartProps,
+	ColumnDisplayType,
+	getStackConfiguration,
+} from "./chart-common";
 
 type Category = "DaysOfWeek" | "MonthsOfYear";
 
@@ -31,7 +36,14 @@ const monthsOfYear = [
 	"December",
 ];
 
-export function MessagesCategorical({ category }: { category: Category }) {
+type Props = {
+	category: Category;
+} & ColumnChartProps;
+
+export function MessagesCategorical({
+	category,
+	columnDisplayType = ColumnDisplayType.Normal,
+}: Props) {
 	const chartId = useChartId();
 	const { conversationData } = useConversation();
 
@@ -69,6 +81,7 @@ export function MessagesCategorical({ category }: { category: Category }) {
 			data: {
 				type: "bar",
 				columns: columns,
+				...getStackConfiguration(columns, columnDisplayType),
 			},
 			axis: {
 				x: {
@@ -82,7 +95,7 @@ export function MessagesCategorical({ category }: { category: Category }) {
 				},
 			},
 		});
-	}, [conversationData, category, chartId]);
+	}, [conversationData, category, chartId, columnDisplayType]);
 
 	return <div id={chartId.current}></div>;
 }

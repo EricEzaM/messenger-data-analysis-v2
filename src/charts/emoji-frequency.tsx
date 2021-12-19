@@ -2,8 +2,11 @@ import c3 from "c3";
 import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
+import { ColumnChartProps, getStackConfiguration } from "./chart-common";
 
-export function EmojiFrequency() {
+type Props = {} & ColumnChartProps;
+
+export function EmojiFrequency({ columnDisplayType }: Props) {
 	const chartId = useChartId();
 	const { conversationData } = useConversation();
 
@@ -32,12 +35,13 @@ export function EmojiFrequency() {
 		const emojiCountColumns = conversationData.participants.map<
 			[string, ...number[]]
 		>((p) => [p, ...topEmojis.map((w) => emojiCounts[w][p] ?? 0)]);
-		debugger;
+
 		c3.generate({
 			bindto: `#${chartId.current}`,
 			data: {
 				type: "bar",
 				columns: emojiCountColumns,
+				...getStackConfiguration(emojiCountColumns, columnDisplayType),
 			},
 			axis: {
 				x: {
@@ -46,7 +50,7 @@ export function EmojiFrequency() {
 				},
 			},
 		});
-	}, [conversationData, chartId]);
+	}, [conversationData, chartId, columnDisplayType]);
 
 	return <div className="chart-xticks-large" id={chartId.current}></div>;
 }

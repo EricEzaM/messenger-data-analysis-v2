@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { ColumnDisplayType } from "./charts/chart-common";
 import { EmojiFrequency } from "./charts/emoji-frequency";
 import { MessagesCategorical } from "./charts/messages-date-categorical";
 import { MessageLengths } from "./charts/messages-lengths";
@@ -16,6 +17,7 @@ export function SubApp() {
 	const [lengthLimit, setLengthLimit] = useState(12);
 	const [wordLenMin, setWordLenMin] = useState(1);
 	const [wordLenMax, setWordLenMax] = useState(10);
+	const [columnType, setColumnType] = useState(ColumnDisplayType.Normal);
 
 	function onFilesSelected() {
 		if (input.current && input.current.files) {
@@ -63,12 +65,37 @@ export function SubApp() {
 				/>
 			</div>
 
-			<EmojiFrequency />
-			<WordFrequency lengthMin={wordLenMin} lengthMax={wordLenMax} />
-			<MessageLengths lengthLimit={lengthLimit} />
-			<MessagesTimeOfDay groupBy="Hours" />
-			<MessagesTimeOfDay groupBy="Minutes" />
-			<MessagesCategorical category="MonthsOfYear" />
+			<select
+				onChange={(e) => {
+					console.log(e.target.value);
+					setColumnType(
+						ColumnDisplayType[e.target.value as keyof typeof ColumnDisplayType]
+					);
+				}}
+			>
+				{Object.values(ColumnDisplayType).map((v) => (
+					<option key={v} value={v}>
+						{v}
+					</option>
+				))}
+			</select>
+
+			<EmojiFrequency columnDisplayType={columnType} />
+			<WordFrequency
+				lengthMin={wordLenMin}
+				lengthMax={wordLenMax}
+				columnDisplayType={columnType}
+			/>
+			<MessageLengths
+				lengthLimit={lengthLimit}
+				columnDisplayType={columnType}
+			/>
+			<MessagesTimeOfDay groupBy="Hours" columnDisplayType={columnType} />
+			<MessagesTimeOfDay groupBy="Minutes" columnDisplayType={columnType} />
+			<MessagesCategorical
+				category="MonthsOfYear"
+				columnDisplayType={columnType}
+			/>
 			<MessagesTimeline groupBy="Month" />
 			<ParticipantMessageDistribution />
 			<ParticipantWordsDistribution />

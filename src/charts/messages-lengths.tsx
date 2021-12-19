@@ -2,8 +2,15 @@ import c3 from "c3";
 import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
+import { ColumnChartProps, getStackConfiguration } from "./chart-common";
 
-export function MessageLengths({ lengthLimit = 12 }: { lengthLimit: number }) {
+type Props = {
+	lengthLimit: number;
+} & ColumnChartProps;
+
+type MessageLengthData = { [participant: string]: number[] };
+
+export function MessageLengths({ lengthLimit = 12, columnDisplayType }: Props) {
 	const chartId = useChartId();
 	const { conversationData } = useConversation();
 
@@ -12,21 +19,26 @@ export function MessageLengths({ lengthLimit = 12 }: { lengthLimit: number }) {
 			return;
 		}
 
-		let msgLengthData = conversationData.messages.reduce<{
-			[key: string]: number[];
-		}>((accum, msg) => {
-			if (msg.wordCount) {
-				if (msg.sender in accum) {
-					accum[msg.sender][msg.wordCount] =
-						(accum[msg.sender][msg.wordCount] ?? 0) + 1;
-				} else {
-					accum[msg.sender] = [];
-					accum[msg.sender][msg.wordCount] = 1;
-				}
-			}
+		// Ensures consistency of series order.
+		let defaultDict: MessageLengthData = {};
+		conversationData.participants.forEach((p) => (defaultDict[p] = []));
 
-			return accum;
-		}, {});
+		let msgLengthData = conversationData.messages.reduce<MessageLengthData>(
+			(accum, msg) => {
+				if (msg.wordCount && msg.wordCount <= lengthLimit) {
+					if (msg.sender in accum) {
+						accum[msg.sender][msg.wordCount] =
+							(accum[msg.sender][msg.wordCount] ?? 0) + 1;
+					} else {
+						accum[msg.sender] = [];
+						accum[msg.sender][msg.wordCount] = 1;
+					}
+				}
+
+				return accum;
+			},
+			defaultDict
+		);
 
 		// Remove the "empty" or "undefined" values from the array,
 		// as before we only filled indicies which had values.
@@ -44,34 +56,22 @@ export function MessageLengths({ lengthLimit = 12 }: { lengthLimit: number }) {
 		c3.generate({
 			bindto: `#${chartId.current}`,
 			data: {
+				type: "bar",
 				columns: msgLengthColumns,
+				...getStackConfiguration(msgLengthColumns, columnDisplayType),
 			},
 			axis: {
 				x: {
-					min: 1,
-					max: lengthLimit,
 					padding: {
 						left: 0,
 					},
 					tick: {
-						format: (x) => {
-							if (x === 0) {
-								return "";
-							} else {
-								return x.toString();
-							}
-						},
 						culling: false,
-					},
-				},
-				y: {
-					padding: {
-						bottom: 0,
 					},
 				},
 			},
 		});
-	}, [conversationData, chartId, lengthLimit]);
+	}, [conversationData, chartId, lengthLimit, columnDisplayType]);
 
 	return <div id={chartId.current}></div>;
 }

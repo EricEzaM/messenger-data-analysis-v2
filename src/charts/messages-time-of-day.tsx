@@ -2,15 +2,16 @@ import c3 from "c3";
 import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
+import { ColumnChartProps, getStackConfiguration } from "./chart-common";
 
 type GroupByTimeOfDay = "Hours" | "Minutes";
+
+const MINUTES_INTERVAL = 15;
+const MINUTES_INTERVAL_DIVISOR = 60 / MINUTES_INTERVAL;
 
 const hours = Array(24)
 	.fill(0)
 	.map((v, i) => i); // 0 to 23, hours in the day.
-
-const MINUTES_INTERVAL = 15;
-const MINUTES_INTERVAL_DIVISOR = 60 / MINUTES_INTERVAL;
 
 const minutes = Array(24 * MINUTES_INTERVAL_DIVISOR)
 	.fill(0)
@@ -20,9 +21,13 @@ const minutes = Array(24 * MINUTES_INTERVAL_DIVISOR)
 		return (
 			hour.toString().padStart(2, "0") + ":" + min.toString().padStart(2, "0")
 		);
-	});
+	}); // 00:00 to 23:45, hours in the day in X minute blocks, as defined by minutes interval.
 
-export function MessagesTimeOfDay({ groupBy }: { groupBy: GroupByTimeOfDay }) {
+type Props = {
+	groupBy: GroupByTimeOfDay;
+} & ColumnChartProps;
+
+export function MessagesTimeOfDay({ groupBy, columnDisplayType }: Props) {
 	const chartId = useChartId();
 	const { conversationData } = useConversation();
 
@@ -60,10 +65,7 @@ export function MessagesTimeOfDay({ groupBy }: { groupBy: GroupByTimeOfDay }) {
 			data: {
 				type: "bar",
 				columns: columns,
-				// groups: [[...columns.map((v) => v[0])]],
-				// stack: {
-				// 	normalize: true,
-				// },
+				...getStackConfiguration(columns, columnDisplayType),
 			},
 			axis: {
 				x: {
@@ -74,13 +76,8 @@ export function MessagesTimeOfDay({ groupBy }: { groupBy: GroupByTimeOfDay }) {
 							: minutes,
 				},
 			},
-			// grid: {
-			// 	y: {
-			// 		lines: [{ value: 50, text: "" }],
-			// 	},
-			// },
 		});
-	}, [conversationData, groupBy, chartId]);
+	}, [conversationData, groupBy, chartId, columnDisplayType]);
 
 	return <div id={chartId.current}></div>;
 }
