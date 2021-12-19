@@ -2,6 +2,7 @@ import c3 from "c3";
 import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
+import { compareFnColumns } from "./chart-common";
 
 export function ParticipantWordsDistribution() {
 	const chartId = useChartId();
@@ -29,7 +30,7 @@ export function ParticipantWordsDistribution() {
 			bindto: `#${chartId.current}`,
 			data: {
 				type: "donut",
-				columns: participantWordColumns,
+				columns: participantWordColumns.sort(compareFnColumns),
 			},
 			donut: {
 				title: "Word Distribution",

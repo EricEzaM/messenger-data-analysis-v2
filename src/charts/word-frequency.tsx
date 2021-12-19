@@ -2,7 +2,11 @@ import c3 from "c3";
 import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
-import { ColumnChartProps, getStackConfiguration } from "./chart-common";
+import {
+	ColumnChartProps,
+	compareFnColumns,
+	getStackConfiguration,
+} from "./chart-common";
 
 type Props = {
 	lengthMin: number;
@@ -49,7 +53,7 @@ export function WordFrequency({
 			bindto: `#${chartId.current}`,
 			data: {
 				type: "bar",
-				columns: wordCountColumns,
+				columns: wordCountColumns.sort(compareFnColumns),
 				...getStackConfiguration(wordCountColumns, columnDisplayType),
 			},
 			axis: {

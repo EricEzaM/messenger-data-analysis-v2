@@ -2,7 +2,11 @@ import c3 from "c3";
 import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
-import { ColumnChartProps, getStackConfiguration } from "./chart-common";
+import {
+	ColumnChartProps,
+	compareFnColumns,
+	getStackConfiguration,
+} from "./chart-common";
 
 type GroupByTimeOfDay = "Hours" | "Minutes";
 
@@ -64,7 +68,7 @@ export function MessagesTimeOfDay({ groupBy, columnDisplayType }: Props) {
 			bindto: `#${chartId.current}`,
 			data: {
 				type: "bar",
-				columns: columns,
+				columns: columns.sort(compareFnColumns),
 				...getStackConfiguration(columns, columnDisplayType),
 			},
 			axis: {

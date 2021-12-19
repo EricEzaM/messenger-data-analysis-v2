@@ -33,3 +33,7 @@ export function getStackConfiguration(
 			return undefined;
 	}
 }
+
+export function compareFnColumns(a: [string, ...any[]], b: [string, ...any[]]) {
+	return a[0].localeCompare(b[0]);
+}

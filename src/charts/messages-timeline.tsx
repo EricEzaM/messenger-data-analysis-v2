@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
 import { ConversationData } from "../models/conversation-stats";
+import { compareFnColumns } from "./chart-common";
 
 export type TimelineGroupBy = "Date" | "Week" | "Month" | "Year";
 
@@ -53,10 +54,9 @@ export function MessagesTimeline({ groupBy }: { groupBy: TimelineGroupBy }) {
 				x: "x",
 				columns: [
 					["x", ...dateMessageCounts.map((t) => t.date)],
-					...participantData.map<[string, ...number[]]>((v) => [
-						v.name,
-						...v.counts,
-					]),
+					...participantData
+						.map<[string, ...number[]]>((v) => [v.name, ...v.counts])
+						.sort(compareFnColumns),
 					[
 						"Total",
 						...dateMessageCounts.map((count) =>

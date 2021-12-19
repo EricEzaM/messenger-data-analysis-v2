@@ -2,6 +2,7 @@ import c3 from "c3";
 import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
+import { compareFnColumns } from "./chart-common";
 
 export function ParticipantMessageDistribution() {
 	const chartId = useChartId();
@@ -20,7 +21,7 @@ export function ParticipantMessageDistribution() {
 			bindto: `#${chartId.current}`,
 			data: {
 				type: "donut",
-				columns: participantMessageColumns,
+				columns: participantMessageColumns.sort(compareFnColumns),
 			},
 			donut: {
 				title: "Message Distribution",

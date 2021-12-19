@@ -2,7 +2,11 @@ import c3 from "c3";
 import { useEffect } from "react";
 import { useChartId } from "../hooks/use-chart-id";
 import { useConversation } from "../hooks/use-conversation";
-import { ColumnChartProps, getStackConfiguration } from "./chart-common";
+import {
+	ColumnChartProps,
+	compareFnColumns,
+	getStackConfiguration,
+} from "./chart-common";
 
 type Props = {} & ColumnChartProps;
 
@@ -40,7 +44,7 @@ export function EmojiFrequency({ columnDisplayType }: Props) {
 			bindto: `#${chartId.current}`,
 			data: {
 				type: "bar",
-				columns: emojiCountColumns,
+				columns: emojiCountColumns.sort(compareFnColumns),
 				...getStackConfiguration(emojiCountColumns, columnDisplayType),
 			},
 			axis: {

@@ -6,6 +6,7 @@ import { useConversation } from "../hooks/use-conversation";
 import {
 	ColumnChartProps,
 	ColumnDisplayType,
+	compareFnColumns,
 	getStackConfiguration,
 } from "./chart-common";
 
@@ -80,7 +81,7 @@ export function MessagesCategorical({
 			bindto: `#${chartId.current}`,
 			data: {
 				type: "bar",
-				columns: columns,
+				columns: columns.sort(compareFnColumns),
 				...getStackConfiguration(columns, columnDisplayType),
 			},
 			axis: {
