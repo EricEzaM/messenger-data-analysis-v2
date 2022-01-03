@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { ColumnChartWrapper } from "./column-chart-wrapper";
 import { ColumnDisplayType } from "./charts/chart-common";
 import { EmojiFrequency } from "./charts/emoji-frequency";
 import { MessagesCategorical } from "./charts/messages-date-categorical";
@@ -65,20 +66,7 @@ export function SubApp() {
 				/>
 			</div>
 
-			<select
-				onChange={(e) => {
-					console.log(e.target.value);
-					setColumnType(
-						ColumnDisplayType[e.target.value as keyof typeof ColumnDisplayType]
-					);
-				}}
-			>
-				{Object.values(ColumnDisplayType).map((v) => (
-					<option key={v} value={v}>
-						{v}
-					</option>
-				))}
-			</select>
+			<ColumnChartWrapper ChartComponent={EmojiFrequency} />
 
 			<EmojiFrequency columnDisplayType={columnType} />
 			<WordFrequency
